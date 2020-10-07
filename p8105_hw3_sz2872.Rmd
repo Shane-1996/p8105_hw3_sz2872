@@ -1,0 +1,22 @@
+---
+title: "P8105 hmoework 3"
+author: "Shunyi Zhang"
+output: github_document
+editor_options: 
+  chunk_output_type: console
+---
+
+This is my solution for homework 3.
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(p8105.datasets)
+
+knitr::opts_chunk$set(
+	fig.width = 6, 
+  fig.asp = .6,
+  out.width = "90%"
+)
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+
+```
