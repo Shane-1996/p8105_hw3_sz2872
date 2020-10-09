@@ -60,4 +60,19 @@ instacart %>%
 ```
 
 
+## Make table: popular item
+```{r}
+instacart %>% 
+  filter(
+    aisle %in% c("baking ingredients", "dog food care", "packaged vegetables fruits")
+  ) %>% 
+  group_by(aisle) %>% 
+  count(product_name) %>% 
+  mutate(
+    rank = min_rank(desc(n))
+  ) %>% 
+  filter(rank <= 3) %>% 
+  arrange(aisle, rank) %>% 
+  knitr::kable()
+```
 
