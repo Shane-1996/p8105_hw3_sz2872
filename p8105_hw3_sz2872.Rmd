@@ -20,3 +20,17 @@ knitr::opts_chunk$set(
 theme_set(theme_minimal() + theme(legend.position = "bottom"))
 
 ```
+
+# Problem 1 
+
+## Get data
+```{r}
+data("instacart")
+```
+
+## Explore data
+The data has a dimension of `r dim(instacart)`. It has `r nrow(instacart)` rows and `r ncol(instacart)` columns. It contains variables `r ls(instacart)`. It has variable for user `user_id`. Variables for orders are `order_id`, `order_dow`, and `order_hour_of_day`. Variables for products are `product_id` and `product_name`. There are also variables about aisle and department, `aisle`, `aisle_id`, `department`, and `department_id`.
+
+
+
+
