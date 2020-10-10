@@ -160,3 +160,24 @@ accel_df %>%
 ```
 
 As shown in the graph, there is not a obvious trend between day and total activities. 
+
+
+## Make plot: activity over a day
+```{r}
+accel_df %>% 
+  ggplot(aes(x = min_activity, y = count_activity, color = day )) +
+  geom_point(alpha = 0.3, size = 1) +
+  geom_line(alpha = 0.3) + 
+  labs(
+    title = "Activity over the Course of the Day",
+    x = "Time of the day",
+    y = "Count of Activity",
+    caption = "Data from accel_data.csv"
+  ) + 
+  scale_x_continuous(
+    breaks = c(1, 180, 360, 540, 720, 900, 1080, 1260, 1440),
+    labels = c("0:01", "3:00", "6:00", "9:00", "12:00", "15:00", "18:00", "21:00", "24:00")
+  )
+```
+
+Reading from the graph, the time between 10:30pm to 6:00am the total count is relatively low. This time period should be the time for sleep having the low amount of activity. Around 9pm, the count of activity reaches the highest point. It should be the time for some gaming. At about 12pm and 5pm, there are also high volumes of activity happen. There are about the lunch and dinner time. 
