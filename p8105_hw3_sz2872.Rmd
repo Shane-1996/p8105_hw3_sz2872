@@ -192,3 +192,30 @@ Reading from the graph, the time between 10:30pm to 6:00am has the total count r
 data("ny_noaa")
 ```
 
+
+## Data cleaning, explore snowfall
+```{r}
+ny_noaa %>% 
+  janitor::clean_names() %>% 
+  separate(date, c("year", "month", "day"), sep = "-") %>% 
+  mutate(
+    year = as.factor(year), 
+    month = as.factor(month), 
+    day = as.factor(day), 
+    prcp = as.numeric(prcp), 
+    tmin = as.numeric(tmin), 
+    tmax = as.numeric(tmax), 
+    prcp = prcp / 10,
+    tmin = tmin / 10,
+    tmax = tmax / 10,
+    month = month.name[month]
+  ) 
+
+ny_noaa %>% 
+  count(snow) %>% 
+  arrange(desc(n))
+```
+
+Among the snowfall variable, 0mm is the most commonly observed value, means there is not a lot snow in the New York area.
+
+
