@@ -192,10 +192,15 @@ Reading from the graph, the time between 10:30pm to 6:00am has the total count r
 data("ny_noaa")
 ```
 
+This noaa data contains `r nrow(ny_noaa)` rows and `r ncol(ny_noaa)` columns. It has a dimension of `r dim(ny_noaa)`. 
+The snow depth variable has `r sum(is.na(ny_noaa$snwd))` missing values. It is about 20% of all observations.
+The max temperature variable has `r sum(is.na(ny_noaa$tmax))` missing values, as well the min temperature variable has `r sum(is.na(ny_noaa$tmin))` missing values. They are both almost taking 50% of all observations.
+
 
 ## Data cleaning, explore snowfall
 ```{r}
-ny_noaa %>% 
+ny_noaa_df = 
+  ny_noaa %>% 
   janitor::clean_names() %>% 
   separate(date, c("year", "month", "day"), sep = "-") %>% 
   mutate(
@@ -216,6 +221,26 @@ ny_noaa %>%
   arrange(desc(n))
 ```
 
-Among the snowfall variable, 0mm is the most commonly observed value, means there is not a lot snow in the New York area.
+Among the snowfall variable, 0mm is the most commonly observed value, means there is not a lot snow in the New York area. Also, there are a lot missing value. 
 
 
+## Make plot: average max temperature
+```{r}
+ny_noaa_df %>% 
+  filter(month%in% c("January", "July")) %>% 
+  group_by(id, year, month) %>% 
+  summarise(tmax_mean = mean(tmax)) %>% 
+  ggplot(aes(x = year, y = tmax_mean, color = id, group = id)) +
+  geom_point(alpha = 0.5) +
+  facet_grid(. ~ month) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5,size = 7),
+        legend.position = "none") +
+  labs(
+    title = "the Average Max Temperature in January and in July",
+    x = "Year",
+    y = "Temperature in Celsius",
+    caption = "Data from ny_noaa"
+  )
+```
+
+In general, the average max temperature in January is around 15 to 20 degree lower than the average max temperature in July. There are some extreme situation happened in 1982 January, 1994 January, 2003 January, and 1987 July.
