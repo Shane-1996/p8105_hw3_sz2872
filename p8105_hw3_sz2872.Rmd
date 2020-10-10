@@ -19,6 +19,10 @@ knitr::opts_chunk$set(
 )
 theme_set(theme_minimal() + theme(legend.position = "bottom"))
 
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
 ```
 
 # Problem 1 
@@ -42,6 +46,7 @@ instacart %>%
   count(aisle) %>% 
   arrange(desc(n))
 ```
+
 There are 134 aisles. Among them, the aisle of fresh vegetables is the most items ordered from.
 
 
@@ -112,7 +117,12 @@ accel_df =
     values_to = "count_activity",
     names_prefix = "activity_"
   ) %>% 
-  mutate(day = as.factor(day)) %>% 
+  mutate(
+    day = as.factor(day), 
+    day_id = as.integer(day_id), 
+    week = as.integer(week), 
+    min_activity = as.double(min_activity)
+  ) %>% 
   mutate(
     weekend_vs_weekday = recode(
       day, 
@@ -133,9 +143,20 @@ accel_df =
     )
   ) %>% 
   relocate("day_id", "week", "day", "weekend_vs_weekday") %>% 
-  arrange(day_id)
+  arrange(week, day)
 ```
+
 After steps of tidying, the clean data has a dimension of `r dim(accel_df)`. `day_id` represents the order of day for the study. `week`, `day`, and `weekend_vs_weekday` provide information about the day of study. `min_activity` and `count_activity` shows the count of activities at each minute of the day, recorded by the accelerometers.
 
 
+## Make table: total activities
+```{r}
+accel_df %>% 
+  group_by(week, day) %>% 
+  summarise(sum_activity = sum(count_activity)) %>% 
+  ggplot(aes(x = day, y = sum_activity, color = week)) +
+  geom_point() +
+  facet_grid(week ~ .)
+```
 
+As shown in the graph, there is not a obvious trend between day and total activities. 
