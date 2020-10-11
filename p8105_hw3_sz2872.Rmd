@@ -100,6 +100,15 @@ instacart %>%
 		names_from = order_dow,
 		values_from = mean_hour
 	) %>% 
+  rename(
+    "Sunday" = '0',
+    "Monday" = '1', 
+    "Tuesday" = '2', 
+    "Wednesday" = '3', 
+    "Thursday" = '4', 
+    "Friday" = '5', 
+    "Saturday" = '6'
+  ) %>% 
   knitr::kable()
 ```
 
@@ -235,7 +244,7 @@ ny_noaa_df %>%
   ggplot(aes(x = year, y = tmax_mean, color = id, group = id)) +
   geom_point(alpha = 0.5) +
   facet_grid(. ~ month) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5,size = 7),
+  theme(axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5,size = 5), 
         legend.position = "none") +
   labs(
     title = "the Average Max Temperature in January and in July",
@@ -272,9 +281,7 @@ snowfall_distribution =
     x = "Snowfall in mm", 
     y = "Years"
   )
-```
 
-```{r}
 tmin_vs_tmax + snowfall_distribution
 ```
 
