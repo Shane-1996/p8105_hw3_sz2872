@@ -11,6 +11,8 @@ This is my solution for homework 3.
 ```{r setup, include=FALSE}
 library(tidyverse)
 library(p8105.datasets)
+library(ggridges)
+library(patchwork)
 
 knitr::opts_chunk$set(
 	fig.width = 6, 
@@ -244,3 +246,36 @@ ny_noaa_df %>%
 ```
 
 In general, the average max temperature in January is around 15 to 20 degree lower than the average max temperature in July. There are some extreme situation happened in 1982 January, 1994 January, 2003 January, and 1987 July.
+
+
+## Make plots: tmax vs tmin / snowfall
+```{r}
+tmin_vs_tmax = 
+  ny_noaa_df %>% 
+  ggplot(aes(x = tmax, y = tmin)) + 
+  geom_hex() +
+  geom_density2d() +
+  theme(legend.position = "right") +
+  labs(
+    title = "Max tem vs Min tem",
+    x = "Max tem in Celsius", 
+    y = "Min tem in Celcius"
+  )
+
+snowfall_distribution = 
+  ny_noaa_df %>% 
+  filter(snow > 0 & snow < 100) %>%
+  ggplot(aes(x = snow, y = year)) +
+  ggridges::geom_density_ridges() + 
+  labs(
+    title = "the Distribution of snowfall over years",
+    x = "Snowfall in mm", 
+    y = "Years"
+  )
+```
+
+```{r}
+tmin_vs_tmax + snowfall_distribution
+```
+
+
